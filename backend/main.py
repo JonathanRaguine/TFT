@@ -2,11 +2,18 @@ from fastapi import FastAPI, Depends
 from database import engine, Base, SessionLocal
 from models import Champions, Traits
 from sqlalchemy.orm import Session
+from fastapi.middleware.cors import CORSMiddleware
 
 #creates table defined in models.py
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get('/')
 def read_root():
