@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
 from database import engine, Base, SessionLocal
 from models import Champions, Traits
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from fastapi.middleware.cors import CORSMiddleware
 
 #creates table defined in models.py
@@ -27,7 +27,7 @@ def get_db():
 
 @app.get('/champions')
 def get_champions(db: Session = Depends(get_db)):
-    return db.query(Champions).all()
+    return db.query(Champions).options(joinedload(Champions.traits)).all()
 
 @app.get('/traits')
 def get_traits(db: Session = Depends(get_db)):
