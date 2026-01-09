@@ -26,6 +26,7 @@ teamcomp_champion = Table(
     Column('champions', Integer, ForeignKey('champions.id'))
 )
 
+
 class Champions(Base):                       #Inherits from base, registers as a table
     __tablename__ = 'champions'
 
@@ -33,6 +34,7 @@ class Champions(Base):                       #Inherits from base, registers as a
     name = Column(String, nullable=False,unique=True, index=True) 
     cost = Column(Integer, nullable=False, index=True)
     is_unlockable = Column(Boolean, default=False)
+    unlock_requirement = Column(String)
     traits = relationship("Traits", secondary=champion_trait, back_populates='champions')
     teamcomps = relationship("TeamComp", secondary=teamcomp_champion, back_populates='champions')
 
