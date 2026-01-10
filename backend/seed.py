@@ -90,8 +90,8 @@ caitlyn.traits.extend([piltover, longshot])
 illaoi = Champions(name="Illaoi", cost=1, image_id="Illaoi")
 illaoi.traits.extend([bilgewater, bruiser])
 
-jarvan_iv = Champions(name="Jarvan IV", cost=1, image_id="JarvanIV")
-jarvan_iv.traits.extend([demacia, defender])
+jarvaniv = Champions(name="Jarvan IV", cost=1, image_id="JarvanIV")
+jarvaniv.traits.extend([demacia, defender])
 
 jhin = Champions(name="Jhin", cost=1, image_id="Jhin")
 jhin.traits.extend([ionia, gunslinger])
@@ -127,7 +127,7 @@ ashe.traits.extend([freljord, quickstriker])
 bard = Champions(name="Bard", cost=2, is_unlockable=True, unlock_requirement="Reroll 4 times before Stage 2 Carousel", image_id="Bard")
 bard.traits.extend([caretaker])
 
-chogath = Champions(name="Cho'Gath", cost=2, image_id="Chogath")
+chogath = Champions(name="Cho'Gath", cost=2, image_id="ChoGath")
 chogath.traits.extend([void, juggernaut])
 
 ekko = Champions(name="Ekko", cost=2, image_id="Ekko")
@@ -200,7 +200,7 @@ jinx.traits.extend([zaun, gunslinger])
 kennen = Champions(name="Kennen", cost=3, is_unlockable=True, unlock_requirement="8 star levels of Ionia, Yordle, or Defender", image_id="Kennen")
 kennen.traits.extend([ionia, yordle, defender])
 
-kobuko_yuumi = Champions(name="Kobuko & Yuumi", cost=3, is_unlockable=True, unlock_requirement="Level 7 + 6 star levels of Yordle, Bruiser, or Invoker", image_id="Yuumi")
+kobuko_yuumi = Champions(name="Kobuko & Yuumi", cost=3, is_unlockable=True, unlock_requirement="Level 7 + 6 star levels of Yordle, Bruiser, or Invoker", image_id="Kobuko")
 kobuko_yuumi.traits.extend([yordle, bruiser, invoker])
 
 leblanc = Champions(name="LeBlanc", cost=3, is_unlockable=True, unlock_requirement="Sion with 2 items equipped", image_id="Leblanc")
@@ -234,7 +234,7 @@ zoe.traits.extend([targon])
 ambessa = Champions(name="Ambessa", cost=4, image_id="Ambessa")
 ambessa.traits.extend([noxus, vanquisher])
 
-belveth = Champions(name="Bel'Veth", cost=4, image_id="Belveth")
+belveth = Champions(name="Bel'Veth", cost=4, image_id="BelVeth")
 belveth.traits.extend([void, slayer])
 
 braum = Champions(name="Braum", cost=4, image_id="Braum")
@@ -297,7 +297,7 @@ veigar.traits.extend([yordle, arcanist])
 warwick = Champions(name="Warwick", cost=4, is_unlockable=True, unlock_requirement="Level 7 + Have Jinx and Vi on board", image_id="Warwick")
 warwick.traits.extend([zaun, quickstriker])
 
-wukong = Champions(name="Wukong", cost=4, image_id="MonkeyKing")
+wukong = Champions(name="Wukong", cost=4, image_id="Wukong")
 wukong.traits.extend([ionia, bruiser])
 
 yone = Champions(name="Yone", cost=4, is_unlockable=True, unlock_requirement="3-star Yasuo", image_id="Yone")
@@ -349,7 +349,7 @@ thex.traits.extend([hexmech, piltover, gunslinger])
 thresh = Champions(name="Thresh", cost=5, is_unlockable=True, unlock_requirement="Collect 175 Shadow Isles Souls", image_id="Thresh")
 thresh.traits.extend([shadow_isles, warden])
 
-tibbers = Champions(name="Tibbers", cost=5, image_id="Tibbers")
+tibbers = Champions(name="Tibbers", cost=5, image_id="AnnieTibbers")
 tibbers.traits.extend([arcanist])
 
 volibear = Champions(name="Volibear", cost=5, is_unlockable=True, unlock_requirement="Level 8 + Unit with 3800 Health at combat start", image_id="Volibear")
@@ -365,8 +365,8 @@ zilean = Champions(name="Zilean", cost=5, image_id="Zilean")
 zilean.traits.extend([chronokeeper, invoker])
 
 # 7-cost champions
-aurelion_sol = Champions(name="Aurelion Sol", cost=7, is_unlockable=True, unlock_requirement="5 unique Targonians", image_id="AurelionSol")
-aurelion_sol.traits.extend([star_forger, targon])
+aurelionsol = Champions(name="Aurelion Sol", cost=7, is_unlockable=True, unlock_requirement="5 unique Targonians", image_id="AurelionSol")
+aurelionsol.traits.extend([star_forger, targon])
 
 baron_nashor = Champions(name="Baron Nashor", cost=7, is_unlockable=True, unlock_requirement="Level 10 + Field 7 unique Void units", image_id="BaronNashor")
 baron_nashor.traits.extend([void, riftscourge])
@@ -380,13 +380,13 @@ ryze.traits.extend([rune_mage])
 sylas = Champions(name="Sylas", cost=7, is_unlockable=True, unlock_requirement="Sell 2-star Jarvan IV, Garen, and Lux", image_id="Sylas")
 sylas.traits.extend([chainbreaker, arcanist, defender])
 
-zaahen = Champions(name="Zaahen", cost=7, is_unlockable=True, unlock_requirement="Trials of Twilight Augment + 3-star Xin Zhao for 5 combats", image_id="Zaahen")
+zaahen = Champions(name="Zaahen", cost=7, is_unlockable=True, unlock_requirement="Trials of Twilight Augment + 3-star Xin Zhao for 5 combats", image_id="Zaheen")
 zaahen.traits.extend([darkin, immortal])
 
 # Add all champions
 all_champions = [
     # 1-cost
-    anivia, blitzcrank, briar, caitlyn, illaoi, jarvan_iv, jhin, kogmaw, lulu, 
+    anivia, blitzcrank, briar, caitlyn, illaoi, jarvaniv, jhin, kogmaw, lulu, 
     qiyana, rumble, shen, sona, viego,
     # 2-cost
     aphelios, ashe, bard, chogath, ekko, graves, neeko, orianna, poppy, reksai,
@@ -402,7 +402,7 @@ all_champions = [
     aatrox, annie, azir, fiddlesticks, galio, kindred, lucian_senna, mel, ornn,
     sett, shyvana, tahm_kench, thex, thresh, tibbers, volibear, xerath, ziggs, zilean,
     # 7-cost
-    aurelion_sol, baron_nashor, brock, ryze, sylas, zaahen
+    aurelionsol, baron_nashor, brock, ryze, sylas, zaahen
 ]
 
 for champion in all_champions:

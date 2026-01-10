@@ -1,2 +1,3 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+DEVELOPMENT_KEY = RGAPI-8ed535c1-a4ff-4cfe-b031-447586964f26
