@@ -57,9 +57,12 @@ function App() {
         {displayedChampions.map(champion => (
           <div key = {champion.id} style = {{display: 'flex', alignItems: 'center', margin: '5px'}}>
           <img 
-            src={`https://ddragon.leagueoflegends.com/cdn/16.1.1/img/champion/${champion.image_id}.png`}
-            alt={champion.name}
-            style={{width: '48px', height: '48px', marginRight: '10px'}}
+              src={`https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/patching/tft16_${champion.image_id.toLowerCase()}_square.tft_set16.png`}
+              onError={(e) => {
+                e.target.src = `https://ddragon.leagueoflegends.com/cdn/16.1.1/img/tft-champion/TFT16_${champion.image_id}.TFT_Set16.png`
+              }}
+              alt={champion.name}
+              style={{width: '48px', height: '48px', marginRight: '10px'}}
           />
           {champion.name} - {champion.cost} gold
           {champion.is_unlockable ? ` (Unlock: ${champion.unlock_requirement})` : ''}
