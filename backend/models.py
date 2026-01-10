@@ -26,11 +26,12 @@ teamcomp_champion = Table(
     Column('champions', Integer, ForeignKey('champions.id'))
 )
 
-
+image_id = Column(String)
 class Champions(Base):                       #Inherits from base, registers as a table
     __tablename__ = 'champions'
 
     id = Column(Integer, primary_key=True)  #unique ID for each row
+    image_id = Column(String)
     name = Column(String, nullable=False,unique=True, index=True) 
     cost = Column(Integer, nullable=False, index=True)
     is_unlockable = Column(Boolean, default=False)
