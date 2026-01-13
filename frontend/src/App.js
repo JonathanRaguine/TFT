@@ -54,23 +54,81 @@ function App() {
           ))}
         </select>
         <p>Found {champions.length} champions</p>
-        {displayedChampions.map(champion => (
-          <div key = {champion.id} style = {{display: 'flex', alignItems: 'center', margin: '5px'}}>
+        {[1, 2, 3, 4, 5, 7].map(cost => {
+  const championsAtCost = displayedChampions.filter(c => c.cost === cost);
+  const regular = championsAtCost.filter(c => !c.is_unlockable);
+  const unlockable = championsAtCost.filter(c => c.is_unlockable);
+  
+  return (
+    <div key={cost} style={{
+      backgroundColor: cost === 1 ? '#333741E6' : 
+                       cost === 2 ? '#1a3d3dE6' : 
+                       cost === 3 ? '#1a3351E6' :
+                       cost === 4 ? '#321244E6' :
+                       '#38322aE6',
+                       width: '500px', 
+                       padding: '10px',
+                       marginBottom: '10px'
+    }}>
+      <div>
+        {regular.map(champion => (
           <img 
-              src={`https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/patching/tft16_${champion.image_id.toLowerCase()}_square.tft_set16.png`}
-              onError={(e) => {
-                e.target.src = `https://ddragon.leagueoflegends.com/cdn/16.1.1/img/tft-champion/TFT16_${champion.image_id}.TFT_Set16.png`
-              }}
-              alt={champion.name}
-              style={{width: '48px', height: '48px', marginRight: '10px'}}
+            key={champion.id}
+            src={`https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/patching/tft16_${champion.image_id.toLowerCase()}_square.tft_set16.png`}
+            alt={champion.name}
+            style={{
+              width: '48px', 
+              height: '48px',
+              margin: '2px',
+              border: '2px solid', 
+              borderColor: cost === 1 ? '#aaaaac' : 
+                           cost === 2 ? '#15b96d' : 
+                           cost === 3 ? '#4db2e9' :
+                           cost === 4 ? '#c80fae' :
+                           '#e7b12f',}}
           />
-          {champion.name} - {champion.cost} gold
-          {champion.is_unlockable ? ` (Unlock: ${champion.unlock_requirement})` : ''}
-          </div>
         ))}
+      </div>
+      <div>
+        {unlockable.map(champion => (
+          <img 
+            key={champion.id}
+            src={`https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/patching/tft16_${champion.image_id.toLowerCase()}_square.tft_set16.png`}
+            alt={champion.name}
+            style={{
+              width: '48px', 
+              height: '48px', 
+              margin: '2px', 
+              border: '2px solid', 
+              borderColor: cost === 1 ? '#aaaaac' : 
+                           cost === 2 ? '#15b96d' : 
+                           cost === 3 ? '#4db2e9' :
+                           cost === 4 ? '#c80fae' :
+                           '#e7b12f',}}
+          />
+        ))}
+      </div>
+    </div>
+  );
+})}
       </header>
     </div>
   );
 }
 
 export default App;
+
+  // {displayedChampions.map(champion => (
+  //         <div key = {champion.id} style = {{display: 'flex', alignItems: 'center', margin: '5px'}}>
+  //         <img 
+  //             src={`https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/patching/tft16_${champion.image_id.toLowerCase()}_square.tft_set16.png`}
+  //             onError={(e) => {
+  //               e.target.src = `https://ddragon.leagueoflegends.com/cdn/16.1.1/img/tft-champion/TFT16_${champion.image_id}.TFT_Set16.png`
+  //             }}
+  //             alt={champion.name}
+  //             style={{width: '48px', height: '48px', marginRight: '10px'}}
+  //         />
+  //         {champion.name} - {champion.cost} gold
+  //         {champion.is_unlockable ? ` (Unlock: ${champion.unlock_requirement})` : ''}
+  //         </div>
+  //       ))}
