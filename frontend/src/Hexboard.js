@@ -1,12 +1,12 @@
 import React from "react";
 
-function HexBoard({team, addToTeam, removeFromTeam}) {
+function HexBoard({team, addToTeam, removeFromTeam, swapOnBoard}) {
   // Base values - change these to resize everything
   const hexWidth = 80;
   const hexCount = 7;
 
   // Everything else calculated from base
-  const hexHeight = hexWidth * 0.87;
+  const hexHeight = hexWidth * 1.15;
   const hexMargin = hexWidth * 0.04;
   const rowOffset = (hexWidth / 2) + hexMargin;
   const boardWidth = (hexWidth + hexMargin * 2) * hexCount + rowOffset + 20;
@@ -18,7 +18,7 @@ function HexBoard({team, addToTeam, removeFromTeam}) {
     width: `${hexWidth}px`,
     height: `${hexHeight}px`,
     backgroundColor: '#051120',
-    clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
     display: 'inline-block',
     margin: `${hexMargin}px`,
   };
@@ -37,16 +37,28 @@ function HexBoard({team, addToTeam, removeFromTeam}) {
     e.preventDefault();
   };
 
-  const handleDrop = (e, position) =>{
+  const handleDrop = (e, toPosition) =>{
     e.preventDefault();
     const championData = e.dataTransfer.getData('champion');
-    console.log('Dropped on:', position);
-    if(championData) {
-      const champion = JSON.parse(championData);
-      console.log('Adding champion:', champion.name, 'to', position);
-      addToTeam(champion, position);
+    if(!championData) return ;
+  
+    const champion = JSON.parse(championData);
+    const fromPosition = champion.origPosition;
+
+    //dont do anything if dropping on the same position
+    if(fromPosition === toPosition) return;
+    if(fromPosition) {
+      swapOnBoard(champion,fromPosition,toPosition);
+      return;
     }
-  }
+    addToTeam(champion,toPosition);
+  };
+
+  const handleDragStart = (e, champion, origPosition) => {
+    e.dataTransfer.setData('champion', JSON.stringify({...champion, origPosition})
+    );
+  };
+  
   
   return (
     <div style={boardStyle}>
@@ -71,12 +83,14 @@ function HexBoard({team, addToTeam, removeFromTeam}) {
               >
                 {champion && (
                   <img
+                    draggable
+                    onDragStart ={(e) => handleDragStart(e,champion,position)}
                     src={`https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/patching/tft16_${champion.image_id.toLowerCase()}_square.tft_set16.png`}
                     alt={champion.name}
                     style={{
                       width: '100%',
                       height: '100%',
-                      clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+                      clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
                     }}
                   />
                 )}
