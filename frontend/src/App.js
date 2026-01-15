@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from 'react';
 import ChampionTable from './ChampionTable';
@@ -50,10 +49,26 @@ function App() {
     setTeam(newTeam);
   };
   
+  const swapOnBoard = (champion, origPosition, toPosition) => {
+    setTeam(currentTeam => {
+      const newTeam = {...currentTeam};
+      const championAtTarget = currentTeam[toPosition];
+      //remove from orig position
+      if (origPosition){
+        delete newTeam[origPosition];
+      }
+      //if swapping move target champion to the original position
+      if (championAtTarget && origPosition){
+        newTeam[origPosition] = championAtTarget;
+      }
+      //place dragged champion onto new position
+      newTeam[toPosition] = champion;
+      return newTeam; 
+    });
+  };
   return (
-    <div>
+    <div style = {{ backgroundColor: '#070d23'}}>
       <header className="TFT Team Builder">
-        <img src={logo} className="App-logo" alt="logo" />
         <select onChange={c => setCostFilter(c.target.value)}> {/*select cost?*/}
           <option value="all">All Costs</option>
           <option value='1'>1 Cost</option>
@@ -80,6 +95,7 @@ function App() {
             team={team}
             addToTeam={addToTeam}
             removeFromTeam={removeFromTeam}
+            swapOnBoard={swapOnBoard}
           />
         </div>
       </header>
