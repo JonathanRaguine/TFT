@@ -9,7 +9,8 @@ function App() {
   const [costFilter, setCostFilter] = useState('all'); //all shows all champions before you filter
   const [traits, setTraits] = useState([]);
   const [traitFilter, setTraitFilter] = useState('all');
-  const [team, setTeam] = useState({})
+  const [team, setTeam] = useState({});
+  const traitCounts = {};
 
 
   //useEffect runs code when component loads
@@ -44,7 +45,6 @@ function App() {
 
   const removeFromTeam = (position) => {
     const newTeam = {...team};
-    console.log('champion being removed:', team[position]?.name, "at ", position)
     delete newTeam[position];
     setTeam(newTeam);
   };
@@ -66,6 +66,14 @@ function App() {
       return newTeam; 
     });
   };
+
+
+Object.values(team).forEach(champion => {
+  champion.traits.forEach(trait => {
+    traitCounts[trait.name] = (traitCounts[trait.name] || 0) + 1;
+  });
+});
+
   return (
     <div style = {{ backgroundColor: '#070d23'}}>
       <header className="TFT Team Builder">
@@ -97,6 +105,27 @@ function App() {
             removeFromTeam={removeFromTeam}
             swapOnBoard={swapOnBoard}
           />
+          <div style={{ 
+            backgroundColor: '#1a2942', 
+            padding: '15px', 
+            borderRadius: '5px',
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            <h3 style={{ color: '#c9aa71', marginTop: 0 }}>Active Traits</h3>
+            {Object.entries(traitCounts).map(([traitName, count]) => {
+              const traitData = traits.find(t => t.name === traitName);
+              const breakpoints = traitData?.breakpoints?.split(',').map(Number);
+              const nextBreakpoint = breakpoints?.find(bp => bp > count);
+              const lastBreakpoint = breakpoints?.[breakpoints.length - 1];
+              
+              return (
+                <p key={traitName} style={{ color: 'white', margin: '5px 0' }}>
+                  {traitName}: {count}/{nextBreakpoint || lastBreakpoint}
+                </p>
+              );
+            })}
+          </div>
         </div>
       </header>
     </div>
