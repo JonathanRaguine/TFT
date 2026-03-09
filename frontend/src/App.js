@@ -115,7 +115,7 @@ Object.values(team).forEach(champion => {
             <h3 style={{ color: '#c9aa71', marginTop: 0 }}>Active Traits</h3>
             {Object.entries(traitCounts).map(([traitName, count]) => {
               const traitData = traits.find(t => t.name === traitName);
-              const breakpoints = traitData?.breakpoints?.split(',').map(Number);
+              const breakpoints = traitData?.breakpoints ? traitData.breakpoints.split(',').map(Number) : [];
               const nextBreakpoint = breakpoints?.find(bp => bp > count);
               const lastBreakpoint = breakpoints?.[breakpoints.length - 1];
               
