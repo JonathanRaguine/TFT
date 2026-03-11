@@ -3,6 +3,7 @@ from database import engine, Base, SessionLocal
 from models import Champions, Traits
 from sqlalchemy.orm import Session, joinedload
 from fastapi.middleware.cors import CORSMiddleware
+from models import Champions, Traits, Items
 
 #creates table defined in models.py
 Base.metadata.create_all(bind=engine)
@@ -36,3 +37,7 @@ def get_traits(db: Session = Depends(get_db)):
 @app.get('/champions/{champion_id}')
 def get_champion(champion_id: int, db: Session = Depends(get_db)):
     return db.query(Champions).filter(Champions.id == champion_id).first()
+
+@app.get('/items')
+def get_items(db: Session = Depends(get_db)):
+    return db.query(Items).all()
