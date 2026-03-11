@@ -56,3 +56,14 @@ class TeamComp(Base):
     name = Column(String, nullable=False, unique=True)
     description = Column(String)
     champions = relationship("Champions", secondary=teamcomp_champion, back_populates='teamcomps')
+
+class Items(Base):
+    __tablename__ = 'items'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False, unique=True)
+    image_id = Column(String)
+    is_component = Column(Boolean, default=False)
+    description = Column(String)
+    component1 = Column(String)
+    component2 = Column(String)

@@ -7,16 +7,21 @@ import useTeam from './hooks/useTeam';
 import { filterByCost, filterByTrait, countTraits } from './utils/helpers';
 import Filters from './components/Filters';
 import ActiveTraits from './components/ActiveTraits';
+import useItems from './hooks/useItems';
+import ItemTable from './components/ItemTable';
 
 function App() {
   //=============== STATES ================
   const [costFilter, setCostFilter] = useState('all'); //all shows all champions before you filter
   const [traitFilter, setTraitFilter] = useState('all');
   const { champions,traits } = useChampions();
-  const { team, addToTeam, removeFromTeam, swapOnBoard } = useTeam(); 
+  const { team, addToTeam, removeFromTeam, swapOnBoard } = useTeam();
+  const { items } = useItems();
+  
   const filteredByCost = filterByCost(champions, costFilter);
-  const displayedChampions = filterbyTrait(filteredByCost, traitFilter);
+  const displayedChampions = filterByTrait(filteredByCost, traitFilter);
   const traitCounts = countTraits(team);
+
 
   // =========== RENDER ===============
   return (
@@ -44,6 +49,7 @@ function App() {
             traitCounts={traitCounts}
             traits={traits}
           />
+          <ItemTable items={items} />
         </div>
       </header>
     </div>
