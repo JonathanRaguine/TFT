@@ -15,7 +15,7 @@ function App() {
   const [costFilter, setCostFilter] = useState('all'); //all shows all champions before you filter
   const [traitFilter, setTraitFilter] = useState('all');
   const { champions,traits } = useChampions();
-  const { team, addToTeam, removeFromTeam, swapOnBoard } = useTeam();
+  const { team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampion } = useTeam();
   const { items } = useItems();
   
   const filteredByCost = filterByCost(champions, costFilter);
@@ -44,6 +44,7 @@ function App() {
             addToTeam={addToTeam}
             removeFromTeam={removeFromTeam}
             swapOnBoard={swapOnBoard}
+            addItemToChampion={addItemToChampion}
           />
           <ActiveTraits 
             traitCounts={traitCounts}

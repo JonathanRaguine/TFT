@@ -39,8 +39,20 @@ function useTeam() {
     });
   };
 
+  const addItemToChampion = (position,item) => {
+    setTeam(currentTeam => {
+      const champion = currentTeam[position];
+      if (!champion) return currentTeam;
+      const currentItems = champion.items || [];
+      if(currentItems.length >= 3) return currentTeam; //max 3 items per champion
+      return{
+        ...currentTeam, [position]: {...champion, items: [...currentItems, item]}
+      };
+    });
+  }
+
   // Return everything components need
-  return { team, addToTeam, removeFromTeam, swapOnBoard };
+  return { team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampion};
 }
 
 export default useTeam;
