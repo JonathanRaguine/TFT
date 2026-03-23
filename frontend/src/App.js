@@ -24,8 +24,8 @@ function App() {
 
 
   // =========== RENDER ===============
-  return (
-    <div style = {{ backgroundColor: '#070d23'}}>
+return (
+    <div style={{ backgroundColor: '#070d23', minHeight: '100vh', padding: '10px' }}>
       <header className="tft-team-builder">
         <Filters 
           traits={traits}
@@ -34,23 +34,36 @@ function App() {
         />
         <p>Found {champions.length} champions</p>
         <p>Team: {Object.keys(team).length}/10</p>
-        <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
-          <ChampionTable 
-            displayedChampions={displayedChampions}
-            addToTeam={addToTeam}
-          />
-          <HexBoard
-            team={team}
-            addToTeam={addToTeam}
-            removeFromTeam={removeFromTeam}
-            swapOnBoard={swapOnBoard}
-            addItemToChampion={addItemToChampion}
-          />
+
+        {/* Top section: Items + Hex board + Active Traits */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          gap: '10px', 
+          flexWrap: 'wrap',
+          marginBottom: '10px',
+          alignItems: 'flex-start'
+        }}>
+          <div style={{ maxWidth: '480px' }}>
+            <ItemTable items={items} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <HexBoard
+                team={team}
+                addToTeam={addToTeam}
+                removeFromTeam={removeFromTeam}
+                swapOnBoard={swapOnBoard}
+                addItemToChampion={addItemToChampion}
+              />
+              <ChampionTable 
+                displayedChampions={displayedChampions}
+                addToTeam={addToTeam}
+              />
+          </div>
           <ActiveTraits 
             traitCounts={traitCounts}
             traits={traits}
           />
-          <ItemTable items={items} />
         </div>
       </header>
     </div>
