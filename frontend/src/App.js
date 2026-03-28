@@ -5,7 +5,6 @@ import HexBoard from './components/Hexboard'
 import useChampions from './hooks/useChampions';
 import useTeam from './hooks/useTeam';
 import { filterByCost, filterByTrait, countTraits } from './utils/helpers';
-import Filters from './components/Filters';
 import ActiveTraits from './components/ActiveTraits';
 import useItems from './hooks/useItems';
 import ItemTable from './components/ItemTable';
@@ -27,13 +26,6 @@ function App() {
 return (
     <div style={{ backgroundColor: '#070d23', minHeight: '100vh', padding: '10px' }}>
       <header className="tft-team-builder">
-        <Filters 
-          traits={traits}
-          onCostChange={setCostFilter}
-          onTraitChange={setTraitFilter}
-        />
-        <p style={{ color: 'white' }}>Found {champions.length} champions</p>
-        <p style={{ color: 'white' }}>Team: {Object.keys(team).length}/10</p>
 
         {/* ===== TOP ROW: Traits | Hex Board | 2 blank sections ===== */}
         <div style={{ 
@@ -108,6 +100,9 @@ return (
             <ChampionTable 
               displayedChampions={displayedChampions}
               addToTeam={addToTeam}
+              traits={traits}
+              onCostChange={setCostFilter}
+              onTraitChange={setTraitFilter}
             />
           </div>
 
