@@ -1,6 +1,6 @@
 import React from "react";
 
-function ChampionTable({ displayedChampions }) {
+function ChampionTable({ displayedChampions, addToTeam, traits, onCostChange, onTraitChange }) {
 
   const handleDragStart = (e, champion) => {
     e.dataTransfer.setData('champion', JSON.stringify(champion)); // when drag starts store champion data
@@ -8,11 +8,56 @@ function ChampionTable({ displayedChampions }) {
 
   return (
     <div>
+      {/* Filter bar pinned at top */}
+      <div style={{
+        display: 'flex',
+        gap: '5px',
+        padding: '8px',
+        backgroundColor: '#0e1e36',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1,
+      }}>
+        <select 
+          onChange={c => onCostChange(c.target.value)}
+          style={{
+            backgroundColor: '#1a2942',
+            color: 'white',
+            border: '1px solid #2a3f5f',
+            borderRadius: '4px',
+            padding: '4px 8px',
+          }}
+        >
+          <option value="all">All Costs</option>
+          <option value="1">1 Cost</option>
+          <option value="2">2 Cost</option>
+          <option value="3">3 Cost</option>
+          <option value="4">4 Cost</option>
+          <option value="5">5 Cost</option>
+          <option value="7">7 Cost</option>
+        </select>
+
+        <select 
+          onChange={t => onTraitChange(t.target.value)}
+          style={{
+            backgroundColor: '#1a2942',
+            color: 'white',
+            border: '1px solid #2a3f5f',
+            borderRadius: '4px',
+            padding: '4px 8px',
+          }}
+        >
+          <option value="all">All Traits</option>
+          {traits.map(trait => (
+            <option key={trait.id} value={trait.name}>{trait.name}</option>
+          ))}
+        </select>
+      </div>
       {[1, 2, 3, 4, 5, 7].map(cost => {
         const championsAtCost = displayedChampions.filter(c => c.cost === cost);
         const regular = championsAtCost.filter(c => !c.is_unlockable);
         const unlockable = championsAtCost.filter(c => c.is_unlockable);
-
+        if (championsAtCost.length === 0) return null;
         return (
           <div key={cost} style={{
             backgroundColor: cost === 1 ? '#333741E6' : 
