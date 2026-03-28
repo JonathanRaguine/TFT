@@ -20,7 +20,7 @@ function ChampionTable({ displayedChampions }) {
                              cost === 3 ? '#1a3351E6' :
                              cost === 4 ? '#321244E6' :
                              '#38322aE6',
-            width: '500px', 
+            width: '100%', 
             padding: '10px',
             marginBottom: '10px'
           }}>

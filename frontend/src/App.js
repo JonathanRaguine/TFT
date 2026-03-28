@@ -32,39 +32,97 @@ return (
           onCostChange={setCostFilter}
           onTraitChange={setTraitFilter}
         />
-        <p>Found {champions.length} champions</p>
-        <p>Team: {Object.keys(team).length}/10</p>
+        <p style={{ color: 'white' }}>Found {champions.length} champions</p>
+        <p style={{ color: 'white' }}>Team: {Object.keys(team).length}/10</p>
 
-        {/* Top section: Items + Hex board + Active Traits */}
+        {/* ===== TOP ROW: Traits | Hex Board | 2 blank sections ===== */}
         <div style={{ 
           display: 'flex', 
           justifyContent: 'center', 
           gap: '10px', 
-          flexWrap: 'wrap',
           marginBottom: '10px',
-          alignItems: 'flex-start'
+          alignItems: 'stretch',
         }}>
-          <div style={{ maxWidth: '480px' }}>
-            <ItemTable items={items} />
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <HexBoard
-                team={team}
-                addToTeam={addToTeam}
-                removeFromTeam={removeFromTeam}
-                swapOnBoard={swapOnBoard}
-                addItemToChampion={addItemToChampion}
-              />
-              <ChampionTable 
-                displayedChampions={displayedChampions}
-                addToTeam={addToTeam}
-              />
-          </div>
+          {/* Left - Active Traits */}
           <ActiveTraits 
             traitCounts={traitCounts}
             traits={traits}
           />
+
+          {/* Center - Hex Board */}
+          <HexBoard
+            team={team}
+            addToTeam={addToTeam}
+            removeFromTeam={removeFromTeam}
+            swapOnBoard={swapOnBoard}
+            addItemToChampion={addItemToChampion}
+          />
+
+          {/* Right - 2 blank boxes stacked */}
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: '10px',
+          }}>
+            <div style={{
+              backgroundColor: '#1a2942',
+              border: '1px solid #2a3f5f',
+              borderRadius: '5px',
+              padding: '15px',
+              flex: 1,
+              minWidth: '150px',
+              color: '#555',
+              textAlign: 'center',
+            }}>
+              {/* Leave blank for future updates */}
+            </div>
+            <div style={{
+              backgroundColor: '#1a2942',
+              border: '1px solid #2a3f5f',
+              borderRadius: '5px',
+              padding: '15px',
+              flex: 1,
+              minWidth: '150px',
+              color: '#555',
+              textAlign: 'center',
+            }}>
+              {/* Leave blank for future updates */}
+            </div>
+          </div>
         </div>
+
+        {/* ===== BOTTOM ROW: Champion Table | Item Table ===== */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '10px',
+        }}>
+          {/* Champion table - scrollable */}
+          <div style={{
+            overflowY: 'auto',
+            width: '665px',
+            height: '400px',
+            border: '1px solid #2a3f5f',
+            borderRadius: '5px',
+          }}>
+            <ChampionTable 
+              displayedChampions={displayedChampions}
+              addToTeam={addToTeam}
+            />
+          </div>
+
+          {/* Items table - scrollable */}
+          <div style={{
+            overflowY: 'auto',
+            width: '350px',
+            height: '400px',
+            border: '1px solid #2a3f5f',
+            borderRadius: '5px',
+          }}>
+            <ItemTable items={items} />
+          </div>
+        </div>
+
       </header>
     </div>
   );
