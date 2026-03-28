@@ -18,7 +18,7 @@ function ItemTable({ items }) {
         marginBottom: '10px',
         borderRadius: '5px'
       }}>
-        <p style={{ color: '#c9aa71', margin: '0 0 8px 0', fontSize: '12px' }}>Components</p>
+        <h3 style={{ color: '#c9aa71', margin: '0 0 8px 0', fontSize: '12px' }}>Components</h3>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
           {componentItems.map(item => (
             <img
@@ -46,7 +46,7 @@ function ItemTable({ items }) {
         padding: '10px',
         borderRadius: '5px'
       }}>
-        <p style={{ color: '#c9aa71', margin: '0 0 8px 0', fontSize: '12px' }}>Combined Items</p>
+        <h3 style={{ color: '#c9aa71', margin: '0 0 8px 0', fontSize: '12px' }}>Combined Items</h3>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
           {combinedItems.map(item => (
             <img
