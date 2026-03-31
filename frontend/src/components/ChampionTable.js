@@ -7,7 +7,7 @@ function ChampionTable({ displayedChampions, addToTeam, traits, onCostChange, on
   };
 
   return (
-    <div>
+    <div style={{ overflowX: 'hidden'}}>
       {/* Filter bar pinned at top */}
       <div style={{
         display: 'flex',

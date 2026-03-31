@@ -8,6 +8,10 @@ import { filterByCost, filterByTrait, countTraits } from './utils/helpers';
 import ActiveTraits from './components/ActiveTraits';
 import useItems from './hooks/useItems';
 import ItemTable from './components/ItemTable';
+import useItemPriority from './hooks/useItemPriority';
+import useAltBuilds from './hooks/useAltBuilds';
+import ItemPriority from './components/ItemPriority';
+import AltBuilds from './components/AltBuilds';
 
 function App() {
   //=============== STATES ================
@@ -17,9 +21,14 @@ function App() {
   const { team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampion } = useTeam();
   const { items } = useItems();
   
+  const { priorityItems, addPriorityItem, removePriorityItem } = useItemPriority();
+  const { altBuilds, addAltBuild, addItemToAltBuild, removeAltBuild } = useAltBuilds();
+
   const filteredByCost = filterByCost(champions, costFilter);
   const displayedChampions = filterByTrait(filteredByCost, traitFilter);
   const traitCounts = countTraits(team);
+
+  
 
 
   // =========== RENDER ===============
@@ -49,37 +58,23 @@ return (
             swapOnBoard={swapOnBoard}
             addItemToChampion={addItemToChampion}
           />
-
-          {/* Right - 2 blank boxes stacked */}
+          {/* Right - Item Priority + Alt Builds stacked */}
           <div style={{ 
             display: 'flex', 
             flexDirection: 'column', 
             gap: '10px',
           }}>
-            <div style={{
-              backgroundColor: '#1a2942',
-              border: '1px solid #2a3f5f',
-              borderRadius: '5px',
-              padding: '15px',
-              flex: 1,
-              minWidth: '150px',
-              color: '#555',
-              textAlign: 'center',
-            }}>
-              {/* Leave blank for future updates */}
-            </div>
-            <div style={{
-              backgroundColor: '#1a2942',
-              border: '1px solid #2a3f5f',
-              borderRadius: '5px',
-              padding: '15px',
-              flex: 1,
-              minWidth: '150px',
-              color: '#555',
-              textAlign: 'center',
-            }}>
-              {/* Leave blank for future updates */}
-            </div>
+            <ItemPriority
+              priorityItems={priorityItems}
+              addPriorityItem={addPriorityItem}
+              removePriorityItem={removePriorityItem}
+            />
+            <AltBuilds
+              altBuilds={altBuilds}
+              addAltBuild={addAltBuild}
+              addItemToAltBuild={addItemToAltBuild}
+              removeAltBuild={removeAltBuild}
+            />
           </div>
         </div>
 
