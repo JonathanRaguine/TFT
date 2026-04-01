@@ -52,4 +52,4 @@ jobs:
           DATABASE_URL: postgresql://postgres:testpassword@localhost:5432/tft_db
         run: |
           cd backend
-          pytest test_main.py -v
+          python -m pytest test_main.py -v
