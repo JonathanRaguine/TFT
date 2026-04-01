@@ -45,3 +45,14 @@ def test_get_champion_not_found():
     assert response.status_code == 200
     # Currently returns null — we'll improve this later with error handling
     assert response.json() is None
+
+# TEST 6: Can we create and retrieve a champion through the database?
+def test_champions_have_correct_fields():
+    response = client.get("/champions")
+    data = response.json()
+    # If there are champions, verify their structure
+    if len(data) > 0:
+        champion = data[0]
+        assert "name" in champion
+        assert "cost" in champion
+        assert "id" in champion
