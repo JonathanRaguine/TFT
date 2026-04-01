@@ -42,9 +42,9 @@ def test_get_single_champion():
 # TEST 5: What happens when we request a champion that doesn't exist?
 def test_get_champion_not_found():
     response = client.get("/champions/99999")
-    assert response.status_code == 200
-    # Currently returns null — we'll improve this later with error handling
-    assert response.json() is None
+    # Now we correctly return 404 instead of 200 with null
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Champion not found"
 
 # TEST 6: Can we create and retrieve a champion through the database?
 def test_champions_have_correct_fields():
