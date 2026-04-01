@@ -1,0 +1,55 @@
+# Name that shows up in GitHub's Actions tab
+name: Run Tests
+
+# When to run: every push and every pull request to main
+"on":
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    # Run on a Ubuntu virtual machine (GitHub provides this for free)
+    runs-on: ubuntu-latest
+
+    # Spin up a PostgreSQL container for our tests
+    services:
+      db:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: tft_db
+        ports:
+          - 5432:5432
+        # Same healthcheck concept from docker-compose
+        options: >-
+          --health-cmd pg_isready -U postgres
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      # Step 1: Download your code
+      - uses: actions/checkout@v4
+
+      # Step 2: Install Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      # Step 4: Run tests
+      - name: Run tests
+        env:
+          DATABASE_URL: postgresql://postgres:testpassword@localhost:5432/tft_db
+        run: |
+          cd backend
+          pytest test_main.py -v
