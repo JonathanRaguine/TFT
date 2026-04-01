@@ -2,7 +2,7 @@
 name: Run Tests
 
 # When to run: every push and every pull request to main
-"on":
+on:
   push:
     branches: [main]
   pull_request:
