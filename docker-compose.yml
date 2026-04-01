@@ -1,0 +1,48 @@
+# Version of docker-compose syntax
+version: '3.8'
+
+# Each "service" is one container
+services:
+
+  # SERVICE 1: PostgreSQL database
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: tft_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
+  # SERVICE 2: FastAPI backend
+  backend:
+      build: ./backend
+      ports:
+        - "8000:8000"
+      environment:
+        DB_PASSWORD: ${DB_PASSWORD}
+        DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/tft_db
+      depends_on:
+        db:
+          condition: service_healthy
+      restart: on-failure
+
+  # SERVICE 3: React frontend
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    # Don't start frontend until backend is running
+    depends_on:
+      - backend
+
+# Named volume — Docker manages this storage for you
+volumes:
+  postgres_data:

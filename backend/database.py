@@ -4,19 +4,14 @@ from sqlalchemy.orm import sessionmaker
 import os
 from dotenv import load_dotenv
 
-"""
-The Database connection
-This file creates a connection between my python code and PSQL database.
-
-"""
-
 load_dotenv()
 
-DATABASE_URL = f"postgresql://postgres:{os.getenv('DB_PASSWORD')}@127.0.0.1:5432/tft_db"
+# Check for DATABASE_URL first (set by Docker)
+# Fall back to building it manually (local development)
+DATABASE_URL = os.getenv('DATABASE_URL',
+    f"postgresql://postgres:{os.getenv('DB_PASSWORD')}@127.0.0.1:5432/tft_db"
+)
 
-#creates the connection
 engine = create_engine(DATABASE_URL)
-
-#creates session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
