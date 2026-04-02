@@ -84,9 +84,12 @@ combined_items = [
     #{"name": "Zeke's Herald", "image_id": "TFT_Item_ZekesHerald.png", 
     # "component1": "Recurve Bow", "component2": "Giant's Belt", 
     # "description": "Attack Speed to adjacent allies"},
+<<<<<<< HEAD
     {"name": "Void Staff", "image_id": "TFT_Item_VoidStaff.png", 
     "component1": "Recurve Bow", "component2": "Giant's Belt", 
     "description": "Magic damage penetration"},
+=======
+>>>>>>> cc000b02f178f3440c0de6240ccda5d8d80a6949
     
     {"name": "Last Whisper", "image_id": "TFT_Item_LastWhisper.png", 
      "component1": "Recurve Bow", "component2": "Sparring Gloves", 
