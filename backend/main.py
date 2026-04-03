@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from database import engine, Base, SessionLocal
-from models import Champions, Traits
+from models import Champions, Traits, Items
 from schemas import ChampionResponse, TraitResponse
 from sqlalchemy.orm import Session, joinedload
 from fastapi.middleware.cors import CORSMiddleware
@@ -40,3 +40,7 @@ def get_champion(champion_id: int, db: Session = Depends(get_db)):
     if not champion:
         raise HTTPException(status_code=404, detail="Champion not found")
     return champion
+
+@app.get('/items')
+def get_items(db: Session = Depends(get_db)):
+    return db.query(Items).all()

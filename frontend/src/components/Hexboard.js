@@ -1,82 +1,64 @@
 import React from "react";
 
 function HexBoard({team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampion}) {
-  // Base values - change these to resize everything
   const hexWidth = 80;
   const hexCount = 7;
-
-  // Everything else calculated from base
   const hexHeight = hexWidth * 1.15;
   const hexMargin = hexWidth * 0.04;
   const rowOffset = (hexWidth / 2) + hexMargin;
   const boardWidth = (hexWidth + hexMargin * 2) * hexCount + rowOffset + 20;
-  const boardHeight = (hexHeight + hexMargin) * 4 + 20;
-  const rows = ['A','B','C','D']; // 4 rows
-  const columns =[1,2,3,4,5,6,7] // 7 hexes per row
-  
-  const hexStyle = {
-    width: `${hexWidth}px`,
-    height: `${hexHeight}px`,
-    backgroundColor: '#051120',
-    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-    display: 'inline-block',
-    margin: `${hexMargin}px`,
-    position: 'relative',
-  };
+  const boardHeight = (hexHeight + hexMargin + 25) * 4 + 20;
+  const rows = ['A','B','C','D'];
+  const columns = [1,2,3,4,5,6,7];
+
   const boardStyle = {
     backgroundColor: '#0e2b51',
     width: `${boardWidth}px`,
     height: `${boardHeight}px`,
     textAlign: 'center',
-    paddingTop: '8px',      // less on top
-    paddingBottom: '15px',  // more on bottom
+    paddingTop: '8px',
+    paddingBottom: '15px',
     paddingLeft: '10px',
     paddingRight: '10px',
   };
-  
-  const handleDragOver = (e) =>{
+
+  const handleDragOver = (e) => {
     e.preventDefault();
   };
 
-  const handleDrop = (e, toPosition) =>{
+  const handleDrop = (e, toPosition) => {
     e.preventDefault();
-    //check if its an item
     const itemData = e.dataTransfer.getData('item');
     if(itemData) {
       const item = JSON.parse(itemData);
       addItemToChampion(toPosition, item);
       return;
     }
-
     const championData = e.dataTransfer.getData('champion');
-    if(!championData) return ;
-    
-    //otherwise its a champion being dropped
+    if(!championData) return;
     const champion = JSON.parse(championData);
     const fromPosition = champion.origPosition;
-
-    //dont do anything if dropping on the same position
     if(fromPosition === toPosition) return;
     if(fromPosition) {
-      swapOnBoard(champion,fromPosition,toPosition);
+      swapOnBoard(champion, fromPosition, toPosition);
       return;
     }
-    addToTeam(champion,toPosition);
+    addToTeam(champion, toPosition);
   };
 
   const handleDragStart = (e, champion, origPosition) => {
-    e.dataTransfer.setData('champion', JSON.stringify({...champion, origPosition})
-    );
+    e.dataTransfer.setData('champion', JSON.stringify({...champion, origPosition}));
   };
-  
-  
+
   return (
     <div style={boardStyle}>
-      {rows.map(rowLetter => (
+      {rows.map((rowLetter, rowIndex) => (
         <div
           key={rowLetter}
           style={{
-            marginLeft: (rowLetter === 'B' || rowLetter === 'D') ? `${rowOffset}px` : '0px'
+            marginLeft: (rowLetter === 'B' || rowLetter === 'D') ? `${rowOffset}px` : '0px',
+            position: 'relative',
+            zIndex: rows.length - rowIndex,
           }}
         >
           {columns.map(colNum => {
@@ -86,13 +68,28 @@ function HexBoard({team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampi
             return (
               <div
                 key={position}
-                style={hexStyle}
-                onDragOver={handleDragOver}
-                onDrop={(e) => handleDrop(e, position)}
-                onClick={() => champion && removeFromTeam(position)}
+                style={{
+                  display: 'inline-block',
+                  position: 'relative',
+                  margin: `${hexMargin}px`,
+                  width: `${hexWidth}px`,
+                  height: `${hexHeight + 25}px`,
+                  verticalAlign: 'top',
+                }}
               >
-                {champion && (
-                  <>
+                {/* The hex shape */}
+                <div
+                  style={{
+                    width: `${hexWidth}px`,
+                    height: `${hexHeight}px`,
+                    backgroundColor: '#051120',
+                    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                  }}
+                  onDragOver={handleDragOver}
+                  onDrop={(e) => handleDrop(e, position)}
+                  onClick={() => champion && removeFromTeam(position)}
+                >
+                  {champion && (
                     <img
                       draggable
                       onDragStart={(e) => handleDragStart(e, champion, position)}
@@ -101,36 +98,37 @@ function HexBoard({team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampi
                       style={{
                         width: '100%',
                         height: '100%',
-                        clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
                       }}
                     />
-                    {/* Item icons at the bottom of the hex */}
-                    {champion.items && champion.items.length > 0 && (
-                      <div style={{
-                        position: 'absolute',
-                        bottom: '8px',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        display: 'flex',
-                        gap: '2px',
-                      }}>
-                        {champion.items.map((item, index) => (
-                          <img
-                            key={index}
-                            src={`https://ddragon.leagueoflegends.com/cdn/16.5.1/img/tft-item/${item.image_id}`}
-                            alt={item.name}
-                            title={item.name}
-                            style={{
-                              width: '20px',
-                              height: '20px',
-                              border: '1px solid #c9aa71',
-                              borderRadius: '2px',
-                            }}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </>
+                  )}
+                </div>
+
+                {/* Items BELOW the hex */}
+                {champion && champion.items && champion.items.length > 0 && (
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '2px',
+                    marginTop: '-18px',
+                    position: 'relative',
+                    zIndex: 999,
+                  }}>
+                    {champion.items.map((item, index) => (
+                      <img
+                        key={index}
+                        src={`https://ddragon.leagueoflegends.com/cdn/16.5.1/img/tft-item/${item.image_id}`}
+                        alt={item.name}
+                        title={item.name}
+                        style={{
+                          width: '22px',
+                          height: '22px',
+                          border: '1px solid #c9aa71',
+                          borderRadius: '3px',
+                          backgroundColor: '#0a1628',
+                        }}
+                      />
+                    ))}
+                  </div>
                 )}
               </div>
             );
