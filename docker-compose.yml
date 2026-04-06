@@ -33,15 +33,17 @@ services:
         db:
           condition: service_healthy
       restart: on-failure
-
+      volumes:
+        - ./backend:/app
   # SERVICE 3: React frontend
   frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    # Don't start frontend until backend is running
-    depends_on:
-      - backend
+        build: ./frontend
+        ports:
+          - "3000:3000"
+        depends_on:
+          - backend
+        volumes:
+          - ./frontend/src:/app/src
 
 # Named volume — Docker manages this storage for you
 volumes:
