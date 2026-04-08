@@ -67,8 +67,8 @@ function AltBuilds({ altBuilds, addAltBuild, addItemToAltBuild, removeAltBuild }
               overflow: 'hidden',
             }}>
               <img
-                src={`https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/patching/tft16_${build.champion.image_id.toLowerCase()}_square.tft_set16.png`}
-                alt={build.champion.name}
+                src={`https://raw.communitydragon.org/pbe/${build.champion.image_id}`}
+                alt={build.champion}
                 style={{
                   width: '100%',
                   height: '100%',

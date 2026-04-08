@@ -73,7 +73,7 @@ function ChampionTable({ displayedChampions, addToTeam, traits, onCostChange, on
               {regular.map(champion => (
                 <img 
                   key={champion.id}
-                  src={`https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/patching/tft16_${champion.image_id.toLowerCase()}_square.tft_set16.png`}
+                  src={`https://raw.communitydragon.org/pbe/${champion.image_id}`}
                   alt={champion.name}
                   draggable={true}
                   onDragStart={(e) => handleDragStart(e,champion)}

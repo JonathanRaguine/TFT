@@ -93,7 +93,7 @@ function HexBoard({team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampi
                     <img
                       draggable
                       onDragStart={(e) => handleDragStart(e, champion, position)}
-                      src={`https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/patching/tft16_${champion.image_id.toLowerCase()}_square.tft_set16.png`}
+                      src={`https://raw.communitydragon.org/pbe/${champion.image_id}`}
                       alt={champion.name}
                       style={{
                         width: '100%',
