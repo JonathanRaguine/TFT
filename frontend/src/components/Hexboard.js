@@ -1,5 +1,16 @@
 import React from "react";
 
+const costColors = {
+  1: '#aaaaac',
+  2: '#15b96d',
+  3: '#4db2e9',
+  4: '#c80fae',
+  5: '#e7b12f',
+  7: '#e7b12f',
+};
+
+const hexClipPath = 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)';
+
 function HexBoard({team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampion}) {
   const hexWidth = 80;
   const hexCount = 7;
@@ -79,27 +90,38 @@ function HexBoard({team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampi
               >
                 <div
                   style={{
+                    boxSizing: 'border-box',
                     width: `${hexWidth}px`,
                     height: `${hexHeight}px`,
-                    backgroundColor: '#051120',
-                    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                    padding: champion ? '2px' : '0px',
+                    backgroundColor: champion ? (costColors[champion.cost] || '#c9aa71') : '#051120',
+                    clipPath: hexClipPath,
                   }}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, position)}
                   onClick={() => champion && removeFromTeam(position)}
                 >
-                  {champion && (
-                    <img
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, champion, position)}
-                      src={`https://raw.communitydragon.org/latest/${champion.image_id}`}
-                      alt={champion.name}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                      }}
-                    />
-                  )}
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: '#051120',
+                      clipPath: hexClipPath,
+                    }}
+                  >
+                    {champion && (
+                      <img
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, champion, position)}
+                        src={`https://raw.communitydragon.org/latest/${champion.image_id}`}
+                        alt={champion.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
 
                 {champion && champion.items && champion.items.length > 0 && (
