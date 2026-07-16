@@ -51,8 +51,12 @@ function useTeam() {
     });
   }
 
+  const loadTeam = (savedTeam) => {
+    setTeam({ ...savedTeam });
+  };
+
   // Return everything components need
-  return { team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampion};
+  return { team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampion, loadTeam};
 }
 
 export default useTeam;

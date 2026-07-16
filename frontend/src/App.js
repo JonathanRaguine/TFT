@@ -12,21 +12,28 @@ import useItemPriority from './hooks/useItemPriority';
 import useAltBuilds from './hooks/useAltBuilds';
 import ItemPriority from './components/ItemPriority';
 import AltBuilds from './components/AltBuilds';
+import useSavedTeams from './hooks/useSavedTeams';
+import SavedTeams from './components/SavedTeams';
 
 function App() {
   //=============== STATES ================
   const [costFilter, setCostFilter] = useState('all'); //all shows all champions before you filter
   const [traitFilter, setTraitFilter] = useState('all');
   const { champions,traits } = useChampions();
-  const { team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampion } = useTeam();
+  const { team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampion, loadTeam } = useTeam();
   const { items } = useItems();
   
   const { priorityItems, addPriorityItem, removePriorityItem } = useItemPriority();
   const { altBuilds, addAltBuild, addItemToAltBuild, removeAltBuild } = useAltBuilds();
+  const { savedTeams, addSavedTeam, removeSavedTeam } = useSavedTeams();
 
   const filteredByCost = filterByCost(champions, costFilter);
   const displayedChampions = filterByTrait(filteredByCost, traitFilter);
   const traitCounts = countTraits(team);
+
+  const saveCurrentTeam = (name) => {
+    addSavedTeam(name, { ...team });
+  };
 
   
 
@@ -34,7 +41,18 @@ function App() {
   // =========== RENDER ===============
 return (
     <div style={{ backgroundColor: '#070d23', minHeight: '100vh', padding: '10px' }}>
-      <header className="tft-team-builder">
+      <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+
+      {/* ===== FAR LEFT: Saved Teams ===== */}
+      <SavedTeams
+        savedTeams={savedTeams}
+        onCreateTeam={saveCurrentTeam}
+        onLoadTeam={loadTeam}
+        removeSavedTeam={removeSavedTeam}
+        boardCount={Object.keys(team).length}
+      />
+
+      <header className="tft-team-builder" style={{ flex: 1 }}>
 
         {/* ===== TOP ROW: Traits | Hex Board | 2 blank sections ===== */}
         <div style={{ 
@@ -114,6 +132,7 @@ return (
         </div>
 
       </header>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String, Boolean, Table, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, Table, ForeignKey, DateTime
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 from database import Base
 
 """
@@ -67,3 +69,12 @@ class Items(Base):
     description = Column(String)
     component1 = Column(String)
     component2 = Column(String)
+
+class SavedTeam(Base):
+    __tablename__ = 'saved_teams'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(String, nullable=False, index=True)  # Cognito sub later; anonymous device id for now
+    name = Column(String, nullable=False)
+    board = Column(JSONB, nullable=False)  # { "A1": {champion + items}, ... } snapshot from the hexboard
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

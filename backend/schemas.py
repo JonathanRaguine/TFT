@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
+from datetime import datetime
 
 
 # Schema for a Trait
@@ -23,5 +24,23 @@ class ChampionResponse(BaseModel):
     is_unlockable: Optional[bool] = False
     unlock_requirement: Optional[str] = None
     traits: List[TraitResponse] = []
+
+    model_config = {"from_attributes": True}
+
+
+# Schema for creating a saved team
+class SavedTeamCreate(BaseModel):
+    user_id: str
+    name: str
+    board: Dict[str, Any]  # position -> champion (with items) snapshot
+
+
+# Schema for returning a saved team
+class SavedTeamResponse(BaseModel):
+    id: int
+    user_id: str
+    name: str
+    board: Dict[str, Any]
+    created_at: datetime
 
     model_config = {"from_attributes": True}
