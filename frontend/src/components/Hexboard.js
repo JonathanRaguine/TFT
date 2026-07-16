@@ -77,7 +77,6 @@ function HexBoard({team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampi
                   verticalAlign: 'top',
                 }}
               >
-                {/* The hex shape */}
                 <div
                   style={{
                     width: `${hexWidth}px`,
@@ -103,7 +102,6 @@ function HexBoard({team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampi
                   )}
                 </div>
 
-                {/* Items BELOW the hex */}
                 {champion && champion.items && champion.items.length > 0 && (
                   <div style={{
                     display: 'flex',
@@ -116,7 +114,7 @@ function HexBoard({team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampi
                     {champion.items.map((item, index) => (
                       <img
                         key={index}
-                        src={`https://ddragon.leagueoflegends.com/cdn/16.5.1/img/tft-item/${item.image_id}`}
+                        src={`https://ddragon.leagueoflegends.com/cdn/16.10.1/img/tft-item/${item.image_id}`}
                         alt={item.name}
                         title={item.name}
                         style={{

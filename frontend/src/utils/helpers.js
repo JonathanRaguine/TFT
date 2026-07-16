@@ -12,6 +12,18 @@ export function filterByTrait(champions, traitFilter) {
   return champions.filter(c => c.traits && c.traits.some(t => t.name === traitFilter));
 }
 
+//color code champions on hextable based on cost
+export function getCostColor(cost) {
+  switch (cost) {
+    case 1: return '#aaaaac';
+    case 2: return '#15b96d';
+    case 3: return '#4db2e9';
+    case 4: return '#c80fae';
+    case 5: return '#e7b12f';
+    default: return '#aaaaac';
+  }
+}
+
 // Counts how many of each trait your team has
 export function countTraits(team) {
   const traitCounts = {};
@@ -20,7 +32,8 @@ export function countTraits(team) {
     champion.traits.forEach(trait => {
       traitCounts[trait.name] = (traitCounts[trait.name] || 0) + 1;
     });
-  });
+});
+
   
   return traitCounts;
 }
