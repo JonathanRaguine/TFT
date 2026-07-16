@@ -70,7 +70,7 @@ function ChampionTable({ displayedChampions, addToTeam, traits, onCostChange, on
               {championsAtCost.map(champion => (
                 <img 
                   key={champion.id}
-                  src={`https://raw.communitydragon.org/pbe/${champion.image_id}`}
+                  src={`https://raw.communitydragon.org/latest/${champion.image_id}`}
                   alt={champion.name}
                   draggable={true}
                   onDragStart={(e) => handleDragStart(e,champion)}

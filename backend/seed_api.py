@@ -5,7 +5,7 @@ from models import Champions, Traits
 
 SET_NUMBER = "17"
 
-CDRAGON_URL = "https://raw.communitydragon.org/pbe/cdragon/tft/en_us.json"
+CDRAGON_URL = "https://raw.communitydragon.org/latest/cdragon/tft/en_us.json"
 
 BREAKPOINT_FALLBACKS = {
     "Anima": "3,6",

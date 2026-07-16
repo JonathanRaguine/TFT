@@ -67,7 +67,7 @@ function AltBuilds({ altBuilds, addAltBuild, addItemToAltBuild, removeAltBuild }
               overflow: 'hidden',
             }}>
               <img
-                src={`https://raw.communitydragon.org/pbe/${build.champion.image_id}`}
+                src={`https://raw.communitydragon.org/latest/${build.champion.image_id}`}
                 alt={build.champion}
                 style={{
                   width: '100%',
