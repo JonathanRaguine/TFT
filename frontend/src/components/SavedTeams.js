@@ -67,10 +67,10 @@ function SavedTeams({ savedTeams, onCreateTeam, onLoadTeam, removeSavedTeam, boa
         </p>
       )}
 
-      {savedTeams.map((teamEntry, teamIndex) => (
+      {savedTeams.map((teamEntry) => (
         <div
-          key={teamIndex}
-          onClick={() => onLoadTeam(teamEntry.champions)}
+          key={teamEntry.id}
+          onClick={() => onLoadTeam(teamEntry.board)}
           title="Click to load this team onto the board"
           style={{
             marginBottom: '14px',
@@ -90,7 +90,7 @@ function SavedTeams({ savedTeams, onCreateTeam, onLoadTeam, removeSavedTeam, boa
               {teamEntry.name}
             </span>
             <button
-              onClick={(e) => { e.stopPropagation(); removeSavedTeam(teamIndex); }}
+              onClick={(e) => { e.stopPropagation(); removeSavedTeam(teamEntry.id); }}
               title="Remove team"
               style={{
                 background: 'none',
@@ -106,7 +106,7 @@ function SavedTeams({ savedTeams, onCreateTeam, onLoadTeam, removeSavedTeam, boa
           </div>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-            {Object.values(teamEntry.champions).map((champion, champIndex) => (
+            {Object.values(teamEntry.board).map((champion, champIndex) => (
               <div
                 key={champIndex}
                 style={{
