@@ -1,3 +1,4 @@
+// src/components/ItemTable.js
 import React from 'react';
 
 function ItemTable({ items }) {
@@ -10,6 +11,7 @@ function ItemTable({ items }) {
 
   return (
     <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+      {/* Component Items */}
       <div style={{
         backgroundColor: '#1a3351E6',
         padding: '10px',
@@ -21,7 +23,7 @@ function ItemTable({ items }) {
           {componentItems.map(item => (
             <img
               key={item.id}
-              src={`https://ddragon.leagueoflegends.com/cdn/16.10.1/img/tft-item/${item.image_id}`}
+              src={`https://ddragon.leagueoflegends.com/cdn/14.24.1/img/tft-item/${item.image_id}`}
               alt={item.name}
               title={item.name}
               draggable={true}
@@ -38,6 +40,7 @@ function ItemTable({ items }) {
         </div>
       </div>
 
+      {/* Combined Items */}
       <div style={{
         backgroundColor: '#321244E6',
         padding: '10px',
@@ -48,7 +51,7 @@ function ItemTable({ items }) {
           {combinedItems.map(item => (
             <img
               key={item.id}
-              src={`https://ddragon.leagueoflegends.com/cdn/16.10.1/img/tft-item/${item.image_id}`}
+              src={`https://ddragon.leagueoflegends.com/cdn/13.24.1/img/tft-item/${item.image_id}`}
               alt={item.name}
               title={item.name}
               draggable={true}

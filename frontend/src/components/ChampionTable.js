@@ -3,11 +3,12 @@ import React from "react";
 function ChampionTable({ displayedChampions, addToTeam, traits, onCostChange, onTraitChange }) {
 
   const handleDragStart = (e, champion) => {
-    e.dataTransfer.setData('champion', JSON.stringify(champion));
+    e.dataTransfer.setData('champion', JSON.stringify(champion)); // when drag starts store champion data
   };
 
   return (
     <div style={{ overflowX: 'hidden'}}>
+      {/* Filter bar pinned at top */}
       <div style={{
         display: 'flex',
         gap: '5px',
@@ -54,6 +55,8 @@ function ChampionTable({ displayedChampions, addToTeam, traits, onCostChange, on
       </div>
       {[1, 2, 3, 4, 5, 7].map(cost => {
         const championsAtCost = displayedChampions.filter(c => c.cost === cost);
+        const regular = championsAtCost.filter(c => !c.is_unlockable);
+        const unlockable = championsAtCost.filter(c => c.is_unlockable);
         if (championsAtCost.length === 0) return null;
         return (
           <div key={cost} style={{
@@ -67,7 +70,7 @@ function ChampionTable({ displayedChampions, addToTeam, traits, onCostChange, on
             marginBottom: '10px'
           }}>
             <div>
-              {championsAtCost.map(champion => (
+              {regular.map(champion => (
                 <img 
                   key={champion.id}
                   src={`https://raw.communitydragon.org/pbe/${champion.image_id}`}
@@ -78,6 +81,28 @@ function ChampionTable({ displayedChampions, addToTeam, traits, onCostChange, on
                     width: '48px', 
                     height: '48px',
                     margin: '2px',
+                    border: '2px solid', 
+                    borderColor: cost === 1 ? '#aaaaac' : 
+                                 cost === 2 ? '#15b96d' : 
+                                 cost === 3 ? '#4db2e9' :
+                                 cost === 4 ? '#c80fae' :
+                                 '#e7b12f',
+                  }}
+                />
+              ))}
+            </div>
+            <div>
+              {unlockable.map(champion => (
+                <img 
+                  key={champion.id}
+                  src={`https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/patching/tft16_${champion.image_id.toLowerCase()}_square.tft_set16.png`}
+                  alt={champion.name}
+                  draggable={true}
+                  onDragStart={(e) => handleDragStart(e,champion)}
+                  style={{
+                    width: '48px', 
+                    height: '48px', 
+                    margin: '2px', 
                     border: '2px solid', 
                     borderColor: cost === 1 ? '#aaaaac' : 
                                  cost === 2 ? '#15b96d' : 

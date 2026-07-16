@@ -21,7 +21,7 @@ A full-stack team composition builder for Teamfight Tactics. Browse champions by
 
 ## Getting Started
 
-### With Docker
+### With Docker (recommended)
 ```bash
 # Clone the repo
 git clone https://github.com/JonathanRaguine/TFT.git
@@ -34,7 +34,7 @@ echo "DB_PASSWORD=yourpassword" > .env
 docker-compose up --build
 
 # In a new terminal, seed the database
-docker exec -it tft-backend-1 python seed_api.py
+docker exec -it tft-backend-1 python seed_traits.py
 docker exec -it tft-backend-1 python seed_items.py
 ```
 
