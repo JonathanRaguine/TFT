@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 // Hardcoded to match the other hooks (useChampions/useItems). When we deploy to
 // AWS this should move to an env var (REACT_APP_API_URL) since the backend won't
 // live on localhost anymore.
-const API = 'http://localhost:8000';
+const API = process.env.REACT_APP_API_URL;
 
 // We need *some* identity to scope teams per user, but there's no login yet.
 // A localStorage id gives each browser a stable owner key so teams survive a

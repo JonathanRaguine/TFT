@@ -12,14 +12,14 @@ function useChampions() {
   // Empty dependency array [] = run once on mount. Without it this would refetch
   // on every render and loop forever.
   useEffect(() => {
-    fetch('http://localhost:8000/champions')
+    fetch(`${process.env.REACT_APP_API_URL}/champions`)
       .then(response => response.json())
       .then(data => setChampions(data));
   }, []);
 
   // Separate effect for traits so one fetch failing doesn't block the other.
   useEffect(() => {
-    fetch('http://localhost:8000/traits')
+    fetch(`${process.env.REACT_APP_API_URL}/traits`)
       .then(response => response.json())
       .then(data => setTraits(data));
   }, []);

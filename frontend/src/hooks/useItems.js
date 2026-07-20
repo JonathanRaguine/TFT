@@ -7,7 +7,7 @@ function useItems() {
   // Load the item catalog once on mount (see useChampions for the [] reasoning).
   // Components split these into "component" vs "combined" themselves.
   useEffect(() => {
-    fetch('http://localhost:8000/items')
+    fetch(`${process.env.REACT_APP_API_URL}/items`)
       .then(response => response.json())
       .then(data => setItems(data));
   }, []);
