@@ -1,5 +1,8 @@
 // src/components/Filters.js
-
+// NOTE: currently unused — nothing imports this component. The cost/trait
+// dropdowns that are actually on screen live inline at the top of ChampionTable.
+// Kept as a standalone version of those filters; delete it or switch
+// ChampionTable to use it to remove the duplication.
 function Filters({ traits, onCostChange, onTraitChange }) {
   return (
     <div className="filters">

@@ -1,8 +1,12 @@
 // src/components/ItemPriority.js
 import React from 'react';
 
+// A drop zone that collects items into an ordered priority list, rendered with
+// arrows between them to show build order.
 function ItemPriority({ priorityItems, addPriorityItem, removePriorityItem }) {
 
+  // Browsers treat elements as non-droppable by default; preventDefault in
+  // dragover is what actually enables the drop event to fire here.
   const handleDragOver = (e) => {
     e.preventDefault(); // allows dropping
   };
@@ -33,6 +37,8 @@ function ItemPriority({ priorityItems, addPriorityItem, removePriorityItem }) {
       </h4>
       <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '2px', justifyContent: 'center' }}>
         {priorityItems.map((item, index) => (
+          // key combines id + index because the same item can appear more than
+          // once in the list, so id alone wouldn't be unique.
           <React.Fragment key={`${item.id}-${index}`}>
             {/* Arrow between items (skip before the first one) */}
             {index > 0 && (

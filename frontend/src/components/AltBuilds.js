@@ -1,8 +1,10 @@
 // src/components/AltBuilds.js
 import React from 'react';
+// Two nested drop zones: the outer panel accepts champions (adds a new alt
+// build), and each build card inside accepts items (adds to that build).
 function AltBuilds({ altBuilds, addAltBuild, addItemToAltBuild, removeAltBuild }) {
   const handleDragOver = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // enable dropping (see ItemPriority for why)
   };
   const handleDropChampion = (e) => {
     e.preventDefault();
@@ -13,6 +15,8 @@ function AltBuilds({ altBuilds, addAltBuild, addItemToAltBuild, removeAltBuild }
   };
   const handleDropItem = (e, buildIndex) => {
     e.preventDefault();
+    // stopPropagation so an item dropped on a build card doesn't ALSO bubble up
+    // to the panel's champion-drop handler (which would misfire on the item).
     e.stopPropagation();
     const itemData = e.dataTransfer.getData('item');
     if (!itemData) return;

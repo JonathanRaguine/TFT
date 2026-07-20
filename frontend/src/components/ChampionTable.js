@@ -2,6 +2,9 @@ import React from "react";
 
 function ChampionTable({ displayedChampions, addToTeam, traits, onCostChange, onTraitChange }) {
 
+  // Put the champion on the drag payload under the 'champion' key. The board's
+  // drop handler reads this exact key to tell champion-drags from item-drags.
+  // No origPosition here, so the board treats it as a brand-new placement.
   const handleDragStart = (e, champion) => {
     e.dataTransfer.setData('champion', JSON.stringify(champion));
   };
@@ -52,9 +55,12 @@ function ChampionTable({ displayedChampions, addToTeam, traits, onCostChange, on
           ))}
         </select>
       </div>
+      {/* Group champions into one shelf per cost tier (1,2,3,4,5,7 — there's no
+          6-cost in TFT). Each shelf is tinted with that tier's color so the
+          table mirrors the in-game shop layout. */}
       {[1, 2, 3, 4, 5, 7].map(cost => {
         const championsAtCost = displayedChampions.filter(c => c.cost === cost);
-        if (championsAtCost.length === 0) return null;
+        if (championsAtCost.length === 0) return null; // hide empty tiers (e.g. after filtering)
         return (
           <div key={cost} style={{
             backgroundColor: cost === 1 ? '#333741E6' : 

@@ -1,3 +1,6 @@
+# One-off script (run by hand, not part of the API) that populates the champions
+# and traits tables from Riot's CommunityDragon data dump. Re-run it whenever a
+# new TFT set drops or the data changes.
 import requests
 import json
 from database import SessionLocal
@@ -5,8 +8,13 @@ from models import Champions, Traits
 
 SET_NUMBER = "17"
 
+# "latest" = current live patch. (There's also a "pbe" path for the test server;
+# we switched off it so seeded data matches what live players actually see.)
 CDRAGON_URL = "https://raw.communitydragon.org/latest/cdragon/tft/en_us.json"
 
+# Some traits don't list their activation breakpoints in a form we can parse out
+# of the CDragon JSON, so we hardcode known values here as a backstop. Anything
+# not found in the data falls back to this map (see below).
 BREAKPOINT_FALLBACKS = {
     "Anima": "3,6",
     "Arbiter": "2,3",
@@ -85,6 +93,10 @@ print(f"📊 Found {len(raw_traits)} trait entries\n")
 
 set_prefix = f"TFT{SET_NUMBER}_"
 
+# The raw list is full of non-playable entries (other sets, dummies, summoned
+# units). Keep only real Set 17 champions: their apiName is prefixed for this
+# set AND they have a proper set-17 tile icon. Both checks together filter out
+# the junk that would otherwise show up as broken portraits.
 playable_champions = [
     champ for champ in raw_champions
     if champ.get("apiName", "").startswith(set_prefix)
@@ -95,6 +107,9 @@ playable_champions = [
 db = SessionLocal()
 
 
+# Wipe existing rows first so re-running is idempotent (you get a clean reseed,
+# not duplicates). The join table has to be cleared before the tables it
+# references, or the foreign keys would block the delete.
 from models import champion_trait
 db.execute(champion_trait.delete())
 db.query(Champions).delete()
@@ -137,7 +152,11 @@ for raw_trait in raw_traits:
     )
 
     db.add(trait)
+    # Keep a name->object map so the champion loop below can attach traits by
+    # name without re-querying the DB for each one.
     trait_map[name] = trait
+# flush (not commit) pushes the traits so they get ids we can link to, while
+# staying in the same transaction as the champions that follow.
 db.flush()
 
 champion_count = 0
@@ -148,6 +167,10 @@ for raw_champ in playable_champions:
     cost = raw_champ.get("cost", 1)
     api_name = raw_champ.get("apiName", "")
 
+    # Riot ships the icon path as a .tex (their texture format) which browsers
+    # can't display, so rewrite it to the .png the CDN actually serves. The
+    # "game/" prefix + lowercasing matches the real CDN URL layout the frontend
+    # builds its <img src> from.
     raw_icon = raw_champ.get("tileIcon", "")
     if raw_icon:
         image_id = "game/" + raw_icon.lower().replace(".tex", ".png")

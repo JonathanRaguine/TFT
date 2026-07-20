@@ -1,10 +1,15 @@
 import React from 'react';
 
 function ItemTable({ items }) {
+  // Tag the drag payload with the 'item' key. The board and champion drop zones
+  // key off this to route it to "attach item" instead of "place champion".
   const handleDragStart = (e, item) => {
     e.dataTransfer.setData('item', JSON.stringify(item));
   };
 
+  // Split into the two TFT item classes so they can be shown as separate,
+  // labeled sections: components (the basic building blocks) vs combined
+  // (two components fused). The is_component flag comes from the seed data.
   const componentItems = items.filter(item => item.is_component);
   const combinedItems = items.filter(item => !item.is_component);
 

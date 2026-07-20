@@ -3,18 +3,21 @@
 import { useState, useEffect } from 'react';
 
 function useChampions() {
-  // State for our data
+  // Champions and traits are reference data seeded in the DB, so we fetch them
+  // from the API once rather than hardcoding them in the frontend — a reseed for
+  // a new set updates the app with no code change here.
   const [champions, setChampions] = useState([]);
   const [traits, setTraits] = useState([]);
 
-  // Fetch champions when hook is first used
+  // Empty dependency array [] = run once on mount. Without it this would refetch
+  // on every render and loop forever.
   useEffect(() => {
     fetch('http://localhost:8000/champions')
       .then(response => response.json())
       .then(data => setChampions(data));
   }, []);
 
-  // Fetch traits when hook is first used
+  // Separate effect for traits so one fetch failing doesn't block the other.
   useEffect(() => {
     fetch('http://localhost:8000/traits')
       .then(response => response.json())

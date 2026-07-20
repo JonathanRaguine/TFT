@@ -70,11 +70,23 @@ class Items(Base):
     component1 = Column(String)
     component2 = Column(String)
 
+# A team a user published from the hexboard. Kept separate from TeamComp (which
+# is curated/global with a join table) because these are user-owned snapshots we
+# want to store and return whole, not query by individual champion.
 class SavedTeam(Base):
     __tablename__ = 'saved_teams'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(String, nullable=False, index=True)  # Cognito sub later; anonymous device id for now
+    # Owner key. Indexed because every read filters by it (list this user's teams).
+    # It's an anonymous localStorage id today; becomes the Cognito `sub` once auth
+    # exists. Kept as a plain String so that swap needs no schema change.
+    user_id = Column(String, nullable=False, index=True)
     name = Column(String, nullable=False)
-    board = Column(JSONB, nullable=False)  # { "A1": {champion + items}, ... } snapshot from the hexboard
+    # The board is stored as one JSONB blob ({ "A1": {champion + items}, ... })
+    # rather than normalized rows: it's an immutable snapshot that's always loaded
+    # as a whole, so a document beats join tables here. JSONB (not JSON) so Postgres
+    # can index/query inside it later if we ever need to.
+    board = Column(JSONB, nullable=False)
+    # server_default=func.now() lets the DB stamp the time, so it's consistent
+    # regardless of the app server's clock/timezone; used to order the list.
     created_at = Column(DateTime(timezone=True), server_default=func.now())

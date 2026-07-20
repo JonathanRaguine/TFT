@@ -15,6 +15,9 @@ import AltBuilds from './components/AltBuilds';
 import useSavedTeams from './hooks/useSavedTeams';
 import SavedTeams from './components/SavedTeams';
 
+// App is the single place that owns all shared state (via the hooks below) and
+// wires it into the child components. State lives here, not in the children, so
+// that e.g. the board and the trait counter can react to the same data.
 function App() {
   //=============== STATES ================
   const [costFilter, setCostFilter] = useState('all'); //all shows all champions before you filter
@@ -22,15 +25,22 @@ function App() {
   const { champions,traits } = useChampions();
   const { team, addToTeam, removeFromTeam, swapOnBoard, addItemToChampion, loadTeam } = useTeam();
   const { items } = useItems();
-  
+
   const { priorityItems, addPriorityItem, removePriorityItem } = useItemPriority();
   const { altBuilds, addAltBuild, addItemToAltBuild, removeAltBuild } = useAltBuilds();
   const { savedTeams, addSavedTeam, removeSavedTeam } = useSavedTeams();
 
+  // Derived values, recomputed each render from the raw data above. Filters and
+  // trait counts aren't stored as state — they're always a function of the
+  // current champions/team, so deriving them avoids keeping two things in sync.
   const filteredByCost = filterByCost(champions, costFilter);
   const displayedChampions = filterByTrait(filteredByCost, traitFilter);
   const traitCounts = countTraits(team);
 
+  // Snapshot the board as a plain copy at save time. The spread matters: without
+  // it we'd store a live reference and later board edits would mutate the saved
+  // team. `team` is keyed by position, so copying it preserves where each
+  // champion sat — that's what lets a saved team reload onto the same hexes.
   const saveCurrentTeam = (name) => {
     addSavedTeam(name, { ...team });
   };
@@ -41,9 +51,14 @@ function App() {
   // =========== RENDER ===============
 return (
     <div style={{ backgroundColor: '#070d23', minHeight: '100vh', padding: '10px' }}>
+      {/* Outer flex row: pins Saved Teams to the far left, with the rest of the
+          builder taking the remaining width (flex:1) to its right. alignItems
+          flex-start keeps the panel anchored to the top instead of stretching. */}
       <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
 
       {/* ===== FAR LEFT: Saved Teams ===== */}
+      {/* boardCount is passed (not the whole team) just so the panel can disable
+          its Create button when the board is empty. */}
       <SavedTeams
         savedTeams={savedTeams}
         onCreateTeam={saveCurrentTeam}

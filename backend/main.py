@@ -6,9 +6,15 @@ from sqlalchemy.orm import Session, joinedload
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 
+# Auto-create any missing tables on startup. It's why adding a new model (like
+# SavedTeam) needs no separate migration step — the table appears on next boot.
+# Note: it only *creates* missing tables, it won't alter columns on existing ones.
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+# The React app runs on a different origin (port 3000) than this API (8000), so
+# browsers block its requests unless we explicitly allow that origin here.
+# For AWS this list needs the deployed frontend's domain added.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -20,6 +26,9 @@ app.add_middleware(
 def read_root():
     return {"message": "TFT Comp Builder API"}
 
+# One DB session per request: FastAPI injects it via Depends, and the finally
+# block guarantees the connection is returned to the pool even if the handler
+# raises. Yielding (not returning) is what lets that cleanup run after the response.
 def get_db():
     db = SessionLocal()
     try: yield db
@@ -28,6 +37,9 @@ def get_db():
 
 @app.get('/champions', response_model=List[ChampionResponse])
 def get_champions(db: Session = Depends(get_db)):
+    # joinedload pulls each champion's traits in the same query. Without it,
+    # serializing traits for every champion would fire a separate query per row
+    # (the N+1 problem) and make this endpoint slow.
     return db.query(Champions).options(joinedload(Champions.traits)).all()
 
 @app.get('/traits', response_model=List[TraitResponse])
@@ -45,6 +57,9 @@ def get_champion(champion_id: int, db: Session = Depends(get_db)):
 def get_items(db: Session = Depends(get_db)):
     return db.query(Items).all()
 
+# Always filter by user_id so one person only ever sees their own teams — this
+# is what makes the feature per-user. order_by(created_at) gives a stable
+# oldest-first list instead of relying on insertion order.
 @app.get('/saved-teams', response_model=List[SavedTeamResponse])
 def get_saved_teams(user_id: str, db: Session = Depends(get_db)):
     return (
@@ -59,11 +74,16 @@ def create_saved_team(payload: SavedTeamCreate, db: Session = Depends(get_db)):
     team = SavedTeam(user_id=payload.user_id, name=payload.name, board=payload.board)
     db.add(team)
     db.commit()
+    # refresh so the returned object has the DB-generated id and created_at; the
+    # frontend needs that id to delete the team later.
     db.refresh(team)
     return team
 
 @app.delete('/saved-teams/{team_id}')
 def delete_saved_team(team_id: int, user_id: str, db: Session = Depends(get_db)):
+    # Match on BOTH id and user_id so a user can't delete someone else's team by
+    # guessing an id — ownership is enforced, not just existence. (Once Cognito
+    # is added, user_id comes from the verified token instead of the query string.)
     team = (
         db.query(SavedTeam)
         .filter(SavedTeam.id == team_id, SavedTeam.user_id == user_id)

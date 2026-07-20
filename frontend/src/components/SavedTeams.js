@@ -2,20 +2,25 @@
 import React, { useState } from 'react';
 import { getCostColor } from '../utils/helpers';
 
+// Same hexagon clip used on the board, so saved-team portraits match its look.
 const hexClipPath = 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)';
 
+// Left-hand panel listing the user's saved teams. The data and the save/load/
+// delete actions are owned by App (via useSavedTeams); this component is just
+// the UI plus the naming modal. showModal/teamName are local because they're
+// pure view state nobody else cares about.
 function SavedTeams({ savedTeams, onCreateTeam, onLoadTeam, removeSavedTeam, boardCount }) {
   const [showModal, setShowModal] = useState(false);
   const [teamName, setTeamName] = useState('');
 
   const handleCreateClick = () => {
-    if (boardCount === 0) return;
+    if (boardCount === 0) return; // nothing to save; button is also disabled
     setShowModal(true);
   };
 
   const handleConfirm = () => {
     const name = teamName.trim();
-    if (!name) return;
+    if (!name) return; // reject empty/whitespace names instead of saving a blank one
     onCreateTeam(name);
     setTeamName('');
     setShowModal(false);
@@ -33,6 +38,8 @@ function SavedTeams({ savedTeams, onCreateTeam, onLoadTeam, removeSavedTeam, boa
       borderRadius: '5px',
       padding: '12px',
       width: '380px',
+      // flexShrink:0 is important: without it the parent flex row squeezes this
+      // panel narrower than 380px when space is tight, cramping the team cards.
       flexShrink: 0,
       alignSelf: 'flex-start',
     }}>
@@ -67,6 +74,9 @@ function SavedTeams({ savedTeams, onCreateTeam, onLoadTeam, removeSavedTeam, boa
         </p>
       )}
 
+      {/* Each saved team is one clickable card. Clicking anywhere on it loads
+          that team's board (teamEntry.board is the position->champion snapshot
+          from the backend). Keyed by DB id so React tracks cards across reloads. */}
       {savedTeams.map((teamEntry) => (
         <div
           key={teamEntry.id}
@@ -89,6 +99,8 @@ function SavedTeams({ savedTeams, onCreateTeam, onLoadTeam, removeSavedTeam, boa
             <span style={{ color: 'white', fontWeight: 'bold', fontSize: '14px' }}>
               {teamEntry.name}
             </span>
+            {/* stopPropagation so clicking ✕ deletes the team WITHOUT also
+                triggering the card's onClick (which would load it as it's removed). */}
             <button
               onClick={(e) => { e.stopPropagation(); removeSavedTeam(teamEntry.id); }}
               title="Remove team"
@@ -105,6 +117,8 @@ function SavedTeams({ savedTeams, onCreateTeam, onLoadTeam, removeSavedTeam, boa
             </button>
           </div>
 
+          {/* board is keyed by hex position, but the card just shows the roster,
+              so we render the values (the champions) and ignore the positions. */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
             {Object.values(teamEntry.board).map((champion, champIndex) => (
               <div
@@ -116,7 +130,9 @@ function SavedTeams({ savedTeams, onCreateTeam, onLoadTeam, removeSavedTeam, boa
                   width: '48px',
                 }}
               >
-                {/* Cost-colored hex border wrapping the portrait */}
+                {/* Same two-hexagon border trick as the board (see Hexboard):
+                    colored outer hex + padding, dark inner hex on top, portrait
+                    inside. Reuses getCostColor so tiers match the board exactly. */}
                 <div style={{
                   width: '46px',
                   height: '46px',
@@ -163,6 +179,9 @@ function SavedTeams({ savedTeams, onCreateTeam, onLoadTeam, removeSavedTeam, boa
         </div>
       ))}
 
+      {/* Naming modal. Rendered only when showModal is true. position:fixed +
+          full-screen dark backdrop centers it over the whole app and visually
+          blocks the rest of the UI until the user names the team or cancels. */}
       {showModal && (
         <div style={{
           position: 'fixed',
@@ -188,6 +207,8 @@ function SavedTeams({ savedTeams, onCreateTeam, onLoadTeam, removeSavedTeam, boa
               autoFocus
               value={teamName}
               onChange={(e) => setTeamName(e.target.value)}
+              // Keyboard shortcuts so you don't have to reach for the mouse:
+              // Enter confirms, Escape cancels — standard modal behavior.
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleConfirm();
                 if (e.key === 'Escape') handleCancel();
