@@ -26,7 +26,3 @@ services:
           - ./frontend/.env
         volumes:
           - ./frontend/src:/app/src
-
-# Named volume — Docker manages this storage for you
-volumes:
-  postgres_data:
