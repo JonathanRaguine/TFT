@@ -17,7 +17,7 @@ app = FastAPI()
 # For AWS this list needs the deployed frontend's domain added.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://18.118.25.45:3000"],
+    allow_origins=["http://localhost:3000", "http://18.218.49.125:3000"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
