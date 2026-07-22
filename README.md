@@ -1,5 +1,5 @@
 # TFT Team Comp Builder
-
+<!-- Testing auto-deploy pipeline -->
 A full-stack team composition builder for Teamfight Tactics. Browse champions by cost and traits, drag and drop them onto a hex board, and track active trait synergies in real time.
 
 ![TFT Team Comp Builder](screenshot.png)
