@@ -1,0 +1,83 @@
+<svg width="900" height="560" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect width="900" height="560" fill="#ffffff"/>
+
+  <!-- User -->
+  <rect x="30" y="230" width="90" height="60" rx="4" fill="#ffffff" stroke="#232F3E" stroke-width="1.5"/>
+  <text x="75" y="255" text-anchor="middle" font-size="12" fill="#232F3E">User</text>
+  <text x="75" y="270" text-anchor="middle" font-size="10" fill="#666">Browser</text>
+  <line x1="120" y1="260" x2="170" y2="260" stroke="#232F3E" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Cloudflare -->
+  <rect x="170" y="220" width="140" height="80" rx="4" fill="#FFF6E5" stroke="#F38020" stroke-width="1.5"/>
+  <text x="240" y="248" text-anchor="middle" font-size="12" font-weight="bold" fill="#232F3E">Cloudflare</text>
+  <text x="240" y="266" text-anchor="middle" font-size="10" fill="#666">DNS + TLS proxy</text>
+  <text x="240" y="280" text-anchor="middle" font-size="10" fill="#666">teambuilderplanner.cc</text>
+  <line x1="310" y1="260" x2="360" y2="260" stroke="#232F3E" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- AWS Cloud group -->
+  <rect x="360" y="60" width="510" height="460" rx="6" fill="#F2F8FD" stroke="#232F3E" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="375" y="82" font-size="12" font-weight="bold" fill="#232F3E">AWS Cloud</text>
+
+  <!-- VPC group -->
+  <rect x="385" y="100" width="460" height="220" rx="6" fill="#EAF2FB" stroke="#147EBA" stroke-width="1"/>
+  <text x="400" y="120" font-size="11" font-weight="bold" fill="#147EBA">VPC</text>
+
+  <!-- EC2 box -->
+  <rect x="410" y="140" width="230" height="150" rx="4" fill="#FFF3E0" stroke="#ED7100" stroke-width="1.5"/>
+  <rect x="422" y="150" width="20" height="20" fill="#ED7100"/>
+  <text x="432" y="164" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">EC2</text>
+  <text x="525" y="164" text-anchor="middle" font-size="12" font-weight="bold" fill="#232F3E">EC2 instance</text>
+  <text x="525" y="178" text-anchor="middle" font-size="9" fill="#666">Elastic IP attached</text>
+
+  <rect x="425" y="195" width="90" height="40" rx="3" fill="#ffffff" stroke="#232F3E" stroke-width="1"/>
+  <text x="470" y="212" text-anchor="middle" font-size="10" fill="#232F3E">Frontend</text>
+  <text x="470" y="225" text-anchor="middle" font-size="9" fill="#666">React :80</text>
+
+  <rect x="530" y="195" width="90" height="40" rx="3" fill="#ffffff" stroke="#232F3E" stroke-width="1"/>
+  <text x="575" y="212" text-anchor="middle" font-size="10" fill="#232F3E">Backend</text>
+  <text x="575" y="225" text-anchor="middle" font-size="9" fill="#666">FastAPI :8080</text>
+
+  <text x="525" y="260" text-anchor="middle" font-size="9" fill="#666">Docker Compose</text>
+  <text x="525" y="272" text-anchor="middle" font-size="9" fill="#666">Deployed via SSM</text>
+
+  <line x1="640" y1="215" x2="695" y2="215" stroke="#232F3E" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- RDS box -->
+  <rect x="700" y="140" width="130" height="150" rx="4" fill="#E9F5EE" stroke="#3B48CC" stroke-width="1.5"/>
+  <rect x="712" y="150" width="20" height="20" fill="#3B48CC"/>
+  <text x="722" y="164" text-anchor="middle" font-size="9" fill="#ffffff" font-weight="bold">RDS</text>
+  <text x="765" y="164" text-anchor="middle" font-size="12" font-weight="bold" fill="#232F3E">RDS</text>
+  <text x="765" y="178" text-anchor="middle" font-size="9" fill="#666">PostgreSQL</text>
+  <text x="765" y="230" text-anchor="middle" font-size="9" fill="#666">Not publicly</text>
+  <text x="765" y="242" text-anchor="middle" font-size="9" fill="#666">accessible</text>
+  <text x="765" y="256" text-anchor="middle" font-size="9" fill="#666">VPC-internal only</text>
+
+  <!-- CloudWatch -->
+  <rect x="410" y="345" width="150" height="70" rx="4" fill="#F5EAFB" stroke="#C925D1" stroke-width="1.5"/>
+  <rect x="422" y="355" width="20" height="20" fill="#C925D1"/>
+  <text x="432" y="369" text-anchor="middle" font-size="8" fill="#ffffff" font-weight="bold">CW</text>
+  <text x="485" y="374" text-anchor="middle" font-size="11" font-weight="bold" fill="#232F3E">CloudWatch</text>
+  <text x="485" y="390" text-anchor="middle" font-size="9" fill="#666">Status check alarm</text>
+  <line x1="525" y1="290" x2="500" y2="345" stroke="#232F3E" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- SNS -->
+  <rect x="600" y="345" width="130" height="70" rx="4" fill="#FBEAEA" stroke="#E7157B" stroke-width="1.5"/>
+  <rect x="612" y="355" width="20" height="20" fill="#E7157B"/>
+  <text x="622" y="369" text-anchor="middle" font-size="8" fill="#ffffff" font-weight="bold">SNS</text>
+  <text x="665" y="374" text-anchor="middle" font-size="11" font-weight="bold" fill="#232F3E">SNS</text>
+  <text x="665" y="390" text-anchor="middle" font-size="9" fill="#666">Email notification</text>
+  <line x1="560" y1="380" x2="598" y2="380" stroke="#232F3E" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrow)"/>
+
+  <!-- GitHub Actions -->
+  <rect x="60" y="380" width="180" height="70" rx="4" fill="#F0F0F0" stroke="#232F3E" stroke-width="1.5"/>
+  <text x="150" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="#232F3E">GitHub Actions</text>
+  <text x="150" y="420" text-anchor="middle" font-size="9" fill="#666">On push to main</text>
+  <text x="150" y="433" text-anchor="middle" font-size="9" fill="#666">Deploys via AWS SSM</text>
+  <path d="M 240 415 L 410 220" stroke="#232F3E" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="5,3"/>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#232F3E"/>
+    </marker>
+  </defs>
+</svg>
