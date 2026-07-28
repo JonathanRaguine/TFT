@@ -18,3 +18,16 @@ venv/
 # OS files
 .DS_Store
 Thumbs.db
+
+
+# Terraform state - contains resource details, shouldn't be public
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Local Terraform working files
+.terraform/
+.terraform.lock.hcl
+
+# Variable files that might contain sensitive values
+*.tfvars
